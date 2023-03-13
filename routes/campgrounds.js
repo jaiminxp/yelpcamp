@@ -32,7 +32,7 @@ router.get(
   '/:id',
   catchAsync(async (req, res) => {
     const campground = await Campground.findById(req.params.id).populate(
-      'reviews'
+      'reviews author'
     );
 
     if (!campground) {
@@ -50,7 +50,8 @@ router.post(
   validateCampground,
   catchAsync(async (req, res, next) => {
     const campground = new Campground(req.body.campground);
-    await campground.save();
+    campground.author = req.user._id;
+
     req.flash('success', 'Successfully created a new campground!');
     res.redirect(`/campgrounds/${campground._id}`);
   })
