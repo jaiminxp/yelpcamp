@@ -7,6 +7,7 @@ const {
   isAuthor,
   validateCampground,
 } = require('../lib/middleware');
+const { populate } = require('../models/campground');
 
 router.get(
   '/',
@@ -23,9 +24,14 @@ router.get('/new', isLoggedIn, (req, res) => {
 router.get(
   '/:id',
   catchAsync(async (req, res) => {
-    const campground = await Campground.findById(req.params.id).populate(
-      'reviews author'
-    );
+    const campground = await Campground.findById(req.params.id)
+      .populate({
+        path: 'reviews',
+        populate: {
+          path: 'author', //author of review
+        },
+      })
+      .populate('author'); //author of the campground
 
     if (!campground) {
       req.flash('error', 'Cannot find that campground!');
