@@ -8,15 +8,22 @@ const {
 } = require('../lib/middleware');
 
 const campgrounds = require('../controllers/campgrounds');
+const { storage } = require('../lib/cloudinary.config');
+const upload = require('multer')({ storage });
 
 router
   .route('/')
   .get(catchAsync(campgrounds.index))
-  .post(
-    isLoggedIn,
-    validateCampground,
-    catchAsync(campgrounds.createCampground)
-  );
+  .post(upload.single('image'), (req, res) => {
+    console.log('🚀 req.file', req.file);
+
+    res.send('image uploaded');
+  });
+// .post(
+//   isLoggedIn,
+//   validateCampground,
+//   catchAsync(campgrounds.createCampground)
+// );
 
 router.get('/new', isLoggedIn, campgrounds.renderNewForm);
 
