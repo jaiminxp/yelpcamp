@@ -5,7 +5,12 @@ const Schema = mongoose.Schema;
 const campgroundSchema = new Schema({
   title: String,
   price: Number,
-  image: String,
+  images: [
+    {
+      filename: String,
+      url: String,
+    },
+  ],
   description: String,
   location: String,
   author: { type: Schema.Types.ObjectId, ref: 'User' },
