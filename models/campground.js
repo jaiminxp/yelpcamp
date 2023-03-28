@@ -22,6 +22,17 @@ const campgroundSchema = new Schema({
   title: String,
   price: Number,
   images: [imageSchema],
+  geometry: {
+    type: {
+      type: String,
+      enum: ['Point'],
+      required: true,
+    },
+    coordinates: {
+      type: [Number],
+      required: true,
+    },
+  },
   description: String,
   location: String,
   author: { type: Schema.Types.ObjectId, ref: 'User' },
@@ -31,7 +42,7 @@ const campgroundSchema = new Schema({
       ref: 'Review',
     },
   ],
-});
+})
 
 campgroundSchema.post('findOneAndDelete', async function (doc) {
   if (doc) {
