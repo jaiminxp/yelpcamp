@@ -34,6 +34,7 @@ const seedDB = async () => {
     const camp = new Campground({
       author: user,
       location: `${cities[random1000].city}, ${cities[random1000].state}`,
+      geometry: { type: 'Point', coordinates: [-113.133115, 47.020078] },
       title: `${sample(descriptors)} ${sample(places)}`,
       description:
         'Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident accusantium voluptatum voluptas tenetur beatae praesentium consequuntur aut, porro sapiente dolore rerum eos atque officia deserunt hic, nostrum unde aliquam repudiandae?',
@@ -48,7 +49,7 @@ const seedDB = async () => {
           url: 'https://res.cloudinary.com/webonhire/image/upload/v1678878770/YelpCamp/phnqygwrzzs7ndj3t9e0.jpg',
         },
       ],
-    });
+    })
     camps.push(camp);
   }
 
