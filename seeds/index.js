@@ -20,8 +20,8 @@ const seedDB = async () => {
   await User.deleteMany({});
 
   const user = new User({
-    username: 'dummy_user',
-    email: 'dummyuser@gmail.com',
+    username: 'jaimax',
+    email: 'jaimax@yelpcamp.com',
   });
 
   await User.register(user, 'monkey');
@@ -30,11 +30,12 @@ const seedDB = async () => {
   for (let i = 0; i < 50; i++) {
     const random1000 = Math.floor(Math.random() * 1000);
     const price = Math.floor(Math.random() * 20 + 10);
+    const campgroundLocation = cities[random1000]
 
     const camp = new Campground({
       author: user,
-      location: `${cities[random1000].city}, ${cities[random1000].state}`,
-      geometry: { type: 'Point', coordinates: [-113.133115, 47.020078] },
+      location: `${campgroundLocation.city}, ${campgroundLocation.state}`,
+      geometry: { type: 'Point', coordinates: [campgroundLocation.longitude, campgroundLocation.latitude] },
       title: `${sample(descriptors)} ${sample(places)}`,
       description:
         'Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident accusantium voluptatum voluptas tenetur beatae praesentium consequuntur aut, porro sapiente dolore rerum eos atque officia deserunt hic, nostrum unde aliquam repudiandae?',
