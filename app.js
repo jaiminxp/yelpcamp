@@ -13,6 +13,7 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const mongoSanitize = require('express-mongo-sanitize')
 const helmet = require("helmet")
+const MongoStore = require("connect-mongo")
 
 const User = require('./models/user');
 const ExpressError = require('./utils/ExpressError');
@@ -41,7 +42,21 @@ app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 
+const store = MongoStore.create({
+  mongoUrl: dbUrl,
+  collectionName: 'sessions',
+  touchAfter: 24 * 60 * 60,
+  crypto: {
+    secret: 'secretkey',
+  },
+})
+
+store.on('error', (e) => {
+  console.log("SESSION STORE ERROR!")
+})
+
 const sessionConfig = {
+  store,
   name: "session",
   secret: 'secretkey',
   resave: false,
