@@ -22,6 +22,7 @@ const userRoutes = require('./routes/users');
 const campgroundRoutes = require('./routes/campgrounds');
 const reviewRoutes = require('./routes/reviews');
 const dbUrl = process.env.DB_URL
+const secret = process.env.SECRET
 
 mongoose.set('strictQuery', true);
 mongoose.connect(dbUrl)
@@ -47,7 +48,7 @@ const store = MongoStore.create({
   collectionName: 'sessions',
   touchAfter: 24 * 60 * 60,
   crypto: {
-    secret: 'secretkey',
+    secret: secret,
   },
 })
 
@@ -57,8 +58,8 @@ store.on('error', (e) => {
 
 const sessionConfig = {
   store,
-  name: "session",
-  secret: 'secretkey',
+  name: 'session',
+  secret: secret,
   resave: false,
   saveUninitialized: true,
   cookie: {
@@ -67,7 +68,7 @@ const sessionConfig = {
     expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
     maxAge: 1000 * 60 * 60 * 24 * 7,
   },
-};
+}
 
 app.use(session(sessionConfig));
 app.use(flash());
