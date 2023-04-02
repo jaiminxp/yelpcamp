@@ -20,9 +20,10 @@ const ExpressError = require('./utils/ExpressError');
 const userRoutes = require('./routes/users');
 const campgroundRoutes = require('./routes/campgrounds');
 const reviewRoutes = require('./routes/reviews');
+const dbUrl = process.env.DB_URL
 
 mongoose.set('strictQuery', true);
-mongoose.connect('mongodb://localhost:27017/yelpcamp');
+mongoose.connect(dbUrl)
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
